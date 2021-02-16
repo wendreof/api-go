@@ -46,9 +46,9 @@ func main() {
 	// 	fmt.Println(string(body))
 	// }
 
-	request, err := http.NewRequest("POST", "https://enjyqmzivj2fp.x.pipedream.net/", bytes.NewBuffer(content2Sent))
+	request, err := http.NewRequest("GET", "https://jsonplaceholder.typicode.com/posts/1", bytes.NewBuffer(content2Sent))
 	if err != nil {
-		fmt.Println("[main] Was not possible send it 2 request bin: ",
+		fmt.Println("[main] Was not possible send it 2 server: ",
 			err.Error())
 		return
 	}
@@ -56,7 +56,7 @@ func main() {
 	request.Header.Set("content-type", "application/jsonb; charset=utf8")
 	response, err := client.Do(request)
 	if err != nil {
-		fmt.Println("[main] Was not possible reach the request bin servers: ",
+		fmt.Println("[main] Was not possible reach the server: ",
 			err.Error())
 		return
 	}
@@ -70,6 +70,13 @@ func main() {
 				err.Error())
 			return
 		}
-		fmt.Println(string(body))
+		post := models.Post{}
+		err = json.Unmarshal(body, &post)
+		if err != nil {
+			fmt.Println("[main] Error on unmarshal json: ",
+				err.Error())
+			return
+		}
+		fmt.Printf("Post is %+v\r\n", post)
 	}
 }
