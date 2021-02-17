@@ -12,7 +12,7 @@ import (
 func Basic(resp http.ResponseWriter, req *http.Request) {
 	page := models.Page{}
 	page.Hour = time.Now().Format("15:04:05")
-	if err := Models.ExecuteTemplate(resp, "basic.html", page); err != nil {
+	if err := ModelBasic.ExecuteTemplate(resp, "basic.html", page); err != nil {
 		http.Error(resp, "Was not possibile proceed", http.StatusInternalServerError)
 		fmt.Println("[Basic] Error on execute model")
 	}
