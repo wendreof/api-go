@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/wendreof/hello-go/api/models"
 	"github.com/wendreof/hello-go/api/repositories"
@@ -38,6 +39,18 @@ func Local(resp http.ResponseWriter, req *http.Request) {
 
 	if err := ModelLocal.ExecuteTemplate(resp, "local.html", local); err != nil {
 		http.Error(resp, "Was not possibile proceed", http.StatusInternalServerError)
-		fmt.Println("[Basic] Error on execute model")
+		fmt.Println("[Local] Error on execute model")
 	}
+
+	sql = "INSERT INTO logquery (datarequest) VALUES (?)"
+	result, err := repositories.Db.Exec(sql, time.Now().Format("02/01/2006 15:04:05"))
+	if err != nil {
+		fmt.Println("[Local] Error on add log: ", sql, " - ", err.Error())
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		fmt.Println("[Local] Error on get rowsAffected: ", sql, " - ", err.Error())
+	}
+	fmt.Println("Success on insert, Rows Affcteds: ", rowsAffected)
 }
