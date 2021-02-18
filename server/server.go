@@ -26,6 +26,7 @@ func main() {
 
 	http.HandleFunc("/Handler", handler.Handler)
 	http.HandleFunc("/Basic", handler.Basic)
+	http.HandleFunc("/Local/", handler.Local)
 	fmt.Println("Server available at localhost:8181")
 	http.ListenAndServe(":8181", nil)
 }
